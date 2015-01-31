@@ -45,7 +45,7 @@ public class GerenciadorArquivo {
 
             arquivoTmp += vetor[vetor.length - 1].substring(0, vetor[vetor.length - 1].indexOf("."));
 
-            arquivoTmp += dataFormat+"-modif.txt";
+            arquivoTmp += "-"+dataFormat+"-modif.txt";
             System.out.println(arquivoTmp);
             arq = new FileReader(caminho);
             BufferedReader lerArq = new BufferedReader(arq);
@@ -56,8 +56,8 @@ public class GerenciadorArquivo {
             while (linha != null) {
                 String[] valores = linha.split("\\|");
 
-                if (valores[1].equals(registro)) {
-                    if (valores[coluna + 1].equalsIgnoreCase(valorAntigo)) {
+                if (valores[1].equalsIgnoreCase(registro)) {
+                    if (valores[coluna + 1].equals(valorAntigo)) {
                         valores[coluna + 1] = valorNovo;
                         qtde++;
                     }
