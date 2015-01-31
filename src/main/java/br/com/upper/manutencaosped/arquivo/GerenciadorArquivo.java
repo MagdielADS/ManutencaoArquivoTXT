@@ -30,10 +30,10 @@ public class GerenciadorArquivo {
         int qtde = 0;
         try {
 
-            String aux = caminho.replace("\\", "#");
+            String aux = caminho.replace("\\", "´");
             String arquivoTmp = "";
 
-            String[] vetor = aux.split("#");
+            String[] vetor = caminho.split("´");
             for (int i = 0; i < vetor.length - 1; i++) {
                 arquivoTmp += vetor[i] + "\\";
             }
