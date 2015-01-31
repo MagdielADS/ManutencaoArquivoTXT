@@ -5,8 +5,10 @@
  */
 package br.com.upper.manutencaosped.arquivo;
 
+import br.com.upper.manutencaosped.excecoes.OutColumnOfFileLimits;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -15,8 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,40 +25,49 @@ import java.util.logging.Logger;
  */
 public class GerenciadorArquivo {
 
-    public static int alterarLinhasPorRegistro(String caminho, String registro, int coluna, String valorAntigo, String valorNovo) {
+    public static int alterarLinhasPorRegistro(String caminho, String destino, String registro, int coluna, String valorAntigo, String valorNovo) throws FileNotFoundException, IOException, OutColumnOfFileLimits {
         List<String> linhas = new ArrayList<String>();
         FileReader arq;
         int qtde = 0;
-        try {
-
-            String aux = caminho.replace("\\", "´");
-            String arquivoTmp = "";
-
-            String[] vetor = caminho.split("´");
-            for (int i = 0; i < vetor.length - 1; i++) {
-                arquivoTmp += vetor[i] + "\\";
-            }
-
+        String arquivoTmp = "";
+        if (destino.equals("") || destino.equals("")) {
             Calendar data = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH_mm_ss");
             String dataFormat = df.format(data.getTime());
-            
+            arquivoTmp += caminho.substring(0, caminho.indexOf("."));
+            arquivoTmp += "-" + dataFormat + "-modif.txt";
+        } else {
+            Calendar data = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH_mm_ss");
+            String dataFormat = df.format(data.getTime());
 
-            arquivoTmp += vetor[vetor.length - 1].substring(0, vetor[vetor.length - 1].indexOf("."));
+            String aux = caminho.replace('\\', '/');
+            String[] vetorAux = aux.split("/");
+            arquivoTmp += destino + "\\";
+            arquivoTmp += vetorAux[vetorAux.length - 1].substring(0, vetorAux[vetorAux.length - 1].indexOf("."));
 
-            arquivoTmp += "-"+dataFormat+"-modif.txt";
-            System.out.println(arquivoTmp);
-            arq = new FileReader(caminho);
-            BufferedReader lerArq = new BufferedReader(arq);
-            BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoTmp));
+            arquivoTmp += "-" + dataFormat + "-modif.txt";
+        }
 
-            String linha = lerArq.readLine();
+        arq = new FileReader(caminho);
+        BufferedReader lerArq = new BufferedReader(arq);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoTmp));
 
+        String linha = lerArq.readLine();
+
+        if (linha.charAt(0) == '|') {
             while (linha != null) {
                 String[] valores = linha.split("\\|");
 
+                if (coluna > valores.length - 1) {
+                    throw new OutColumnOfFileLimits("Coluna " + String.valueOf(coluna) + " não existe no registro " + registro);
+                }
+
                 if (valores[1].equalsIgnoreCase(registro)) {
                     if (valores[coluna + 1].equals(valorAntigo)) {
+                        valores[coluna + 1] = valorNovo;
+                        qtde++;
+                    } else if (valorAntigo.equals("") || valorAntigo.equals(" ")) {
                         valores[coluna + 1] = valorNovo;
                         qtde++;
                     }
@@ -80,14 +90,19 @@ public class GerenciadorArquivo {
                 linha = lerArq.readLine();
             }
 
+            if (qtde <= 0) {
+                System.out.println("Não achei o arquivo " + arquivoTmp);
+                System.out.println(new File(arquivoTmp).delete());
+            }
             arq.close();
             lerArq.close();
             writer.close();
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GerenciadorArquivo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(GerenciadorArquivo.class.getName()).log(Level.SEVERE, null, ex);
+            if (qtde <= 0) {
+                new File(arquivoTmp).delete();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Formato de arquivo inválido", "Erro", JOptionPane.ERROR_MESSAGE);
         }
         return qtde;
     }

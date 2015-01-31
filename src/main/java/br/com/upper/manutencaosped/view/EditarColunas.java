@@ -7,6 +7,9 @@ package br.com.upper.manutencaosped.view;
 
 import br.com.upper.manutencaosped.arquivo.GerenciadorArquivo;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -22,6 +25,7 @@ public class EditarColunas extends javax.swing.JFrame {
     public EditarColunas() {
         initComponents();
         setLocationRelativeTo(null);
+        btProcessar.setEnabled(false);
     }
 
     /**
@@ -46,6 +50,9 @@ public class EditarColunas extends javax.swing.JFrame {
         tfValorDe = new javax.swing.JTextField();
         tfValorPara = new javax.swing.JTextField();
         btPesquise = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
+        tfDestino = new javax.swing.JTextField();
+        btDestino = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btProcessar = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
@@ -67,16 +74,28 @@ public class EditarColunas extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(214, 223, 247));
 
         jTextField1.setBackground(new java.awt.Color(204, 204, 204));
-        jTextField1.setText("Arquivo:");
+        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jTextField1.setText("Origem:");
         jTextField1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextField1.setEnabled(false);
 
+        tfArquivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfArquivoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfArquivoKeyReleased(evt);
+            }
+        });
+
         jTextField3.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jTextField3.setText("Registro:");
         jTextField3.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextField3.setEnabled(false);
 
         jTextField4.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jTextField4.setText("Coluna:");
         jTextField4.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextField4.setEnabled(false);
@@ -87,14 +106,72 @@ public class EditarColunas extends javax.swing.JFrame {
         jTextField5.setEnabled(false);
 
         jTextField6.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jTextField6.setText("Valor para:");
         jTextField6.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextField6.setEnabled(false);
+
+        tfColuna.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfColunaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfColunaKeyReleased(evt);
+            }
+        });
+
+        tfRegistro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfRegistroKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfRegistroKeyReleased(evt);
+            }
+        });
+
+        tfValorDe.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfValorDeKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfValorDeKeyReleased(evt);
+            }
+        });
+
+        tfValorPara.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfValorParaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfValorParaKeyReleased(evt);
+            }
+        });
 
         btPesquise.setText("...");
         btPesquise.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btPesquiseActionPerformed(evt);
+            }
+        });
+
+        jTextField2.setBackground(new java.awt.Color(204, 204, 204));
+        jTextField2.setText("Destino:");
+        jTextField2.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextField2.setEnabled(false);
+
+        tfDestino.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfDestinoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfDestinoKeyReleased(evt);
+            }
+        });
+
+        btDestino.setText("....");
+        btDestino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDestinoActionPerformed(evt);
             }
         });
 
@@ -104,31 +181,39 @@ public class EditarColunas extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                    .addComponent(jTextField5)
-                    .addComponent(jTextField1))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tfValorDe, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                            .addComponent(tfRegistro))
+                            .addComponent(jTextField1)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                            .addComponent(jTextField2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tfValorDe, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfColuna, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tfValorPara))))
+                                .addComponent(tfValorPara, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(tfRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(tfColuna, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(tfDestino)
+                                        .addComponent(tfArquivo))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btPesquise, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btDestino, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(tfArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btPesquise, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,16 +225,21 @@ public class EditarColunas extends javax.swing.JFrame {
                     .addComponent(btPesquise))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btDestino))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfColuna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfColuna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfValorDe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfValorPara, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfValorPara, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -174,7 +264,7 @@ public class EditarColunas extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(181, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btProcessar)
@@ -196,12 +286,10 @@ public class EditarColunas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,11 +309,14 @@ public class EditarColunas extends javax.swing.JFrame {
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btProcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProcessarActionPerformed
-        int qtde = GerenciadorArquivo.alterarLinhasPorRegistro(tfArquivo.getText(), tfRegistro.getText(),
-                Integer.parseInt(tfColuna.getText()), tfValorDe.getText(), tfValorPara.getText());
-        System.out.println("Caminho " + tfArquivo.getText());
-        System.out.println("Quantidade de linhas editadas: " + qtde);
-        JOptionPane.showMessageDialog(null, String.valueOf(qtde) + " registros editados!", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            int qtde = GerenciadorArquivo.alterarLinhasPorRegistro(tfArquivo.getText(), tfDestino.getText(), tfRegistro.getText(),
+                    Integer.parseInt(tfColuna.getText()), tfValorDe.getText(), tfValorPara.getText());
+            JOptionPane.showMessageDialog(null, String.valueOf(qtde) + " registros editados!", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            Logger.getLogger(EditarColunas.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog (null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btProcessarActionPerformed
 
     private void btPesquiseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquiseActionPerformed
@@ -239,6 +330,66 @@ public class EditarColunas extends javax.swing.JFrame {
             tfArquivo.setText(arquivo.getPath());
         }
     }//GEN-LAST:event_btPesquiseActionPerformed
+
+    private void btDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDestinoActionPerformed
+        JFileChooser file = new JFileChooser();
+        file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int i = file.showSaveDialog(null);
+        if (i == 1) {
+            tfDestino.setText("");
+        } else {
+            File arquivo = file.getSelectedFile();
+            tfDestino.setText(arquivo.getPath());
+        }
+    }//GEN-LAST:event_btDestinoActionPerformed
+
+    private void tfArquivoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfArquivoKeyPressed
+        habilitaBotao();
+    }//GEN-LAST:event_tfArquivoKeyPressed
+
+    private void tfDestinoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDestinoKeyPressed
+        habilitaBotao();
+    }//GEN-LAST:event_tfDestinoKeyPressed
+
+    private void tfRegistroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfRegistroKeyPressed
+        habilitaBotao();
+    }//GEN-LAST:event_tfRegistroKeyPressed
+
+    private void tfColunaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfColunaKeyPressed
+        habilitaBotao();
+    }//GEN-LAST:event_tfColunaKeyPressed
+
+    private void tfValorDeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfValorDeKeyPressed
+        habilitaBotao();
+    }//GEN-LAST:event_tfValorDeKeyPressed
+
+    private void tfValorParaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfValorParaKeyPressed
+        habilitaBotao();
+    }//GEN-LAST:event_tfValorParaKeyPressed
+
+    private void tfArquivoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfArquivoKeyReleased
+        habilitaBotao();
+    }//GEN-LAST:event_tfArquivoKeyReleased
+
+    private void tfDestinoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDestinoKeyReleased
+        habilitaBotao();
+    }//GEN-LAST:event_tfDestinoKeyReleased
+
+    private void tfRegistroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfRegistroKeyReleased
+        habilitaBotao();
+    }//GEN-LAST:event_tfRegistroKeyReleased
+
+    private void tfColunaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfColunaKeyReleased
+        habilitaBotao();
+    }//GEN-LAST:event_tfColunaKeyReleased
+
+    private void tfValorDeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfValorDeKeyReleased
+        habilitaBotao();
+    }//GEN-LAST:event_tfValorDeKeyReleased
+
+    private void tfValorParaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfValorParaKeyReleased
+        habilitaBotao();
+    }//GEN-LAST:event_tfValorParaKeyReleased
 
     /**
      * @param args the command line arguments
@@ -275,20 +426,34 @@ public class EditarColunas extends javax.swing.JFrame {
         });
     }
 
+    public void habilitaBotao() {
+        if (tfArquivo.getText().trim().equals("")
+                || tfRegistro.getText().trim().equals("")
+                || tfColuna.getText().trim().equals("")
+                || tfValorPara.getText().trim().equals("")) {
+            btProcessar.setEnabled(false);
+        } else {
+            btProcessar.setEnabled(true);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btDestino;
     private javax.swing.JButton btPesquise;
     private javax.swing.JButton btProcessar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField tfArquivo;
     private javax.swing.JTextField tfColuna;
+    private javax.swing.JTextField tfDestino;
     private javax.swing.JTextField tfRegistro;
     private javax.swing.JTextField tfValorDe;
     private javax.swing.JTextField tfValorPara;
