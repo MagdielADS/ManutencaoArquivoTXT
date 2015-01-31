@@ -12,13 +12,17 @@ package br.com.upper.manutencaosped.teste;
 public class teste {
 
     public static void main(String[] args) {
-        String caminho = "dados/log.txt";
-        String[] aux = caminho.split("/");
-        String arquivoTmp = "";
-        for (int i = 0; i < aux.length-1; i++) {
-            arquivoTmp += aux[i];
-        }
+//        String caminho = "dados/log.txt";
+//        String[] aux = caminho.split("/");
+//        String arquivoTmp = "";
+//        for (int i = 0; i < aux.length-1; i++) {
+//            arquivoTmp += aux[i];
+//        }
+        
+        String text = "texto.txt";
+        text = text.substring(0, text.indexOf("."));
+        
 
-        System.out.println(arquivoTmp);
+        System.out.println(text);
     }
 }

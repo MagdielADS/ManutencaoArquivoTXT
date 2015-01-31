@@ -36,14 +36,16 @@ public class GerenciadorArquivo {
             for (int i = 0; i < vetor.length - 1; i++) {
                 arquivoTmp += vetor[i] + "\\";
             }
-
-            arquivoTmp += "\\novoArq.txt";
-
+            arquivoTmp += vetor[vetor.length-1].substring(0, vetor[vetor.length-1].indexOf("."));
+            
+            arquivoTmp += "-modificado.txt";
+            System.out.println(arquivoTmp);
             arq = new FileReader(caminho);
             BufferedReader lerArq = new BufferedReader(arq);
             BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoTmp));
 
             String linha = lerArq.readLine();
+            
 
             while (linha != null) {
                 linha = linha.replace("|", "´");
@@ -63,7 +65,7 @@ public class GerenciadorArquivo {
                     novaLinha += "|";
                     System.out.println(novaLinha);
                     novaLinha += System.getProperty("line.separator");
-                    writer.write(novaLinha);
+                    writer.write("--"+novaLinha);
                 }else{
                     linha = linha.replace("´", "|");
                     System.out.println(linha);
@@ -78,8 +80,8 @@ public class GerenciadorArquivo {
             lerArq.close();
             writer.close();
 
-            new File(caminho).delete();
-            new File(arquivoTmp).renameTo(new File(caminho));
+            //new File(caminho).delete();
+            //new File(arquivoTmp).renameTo(new File(caminho));
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GerenciadorArquivo.class.getName()).log(Level.SEVERE, null, ex);
