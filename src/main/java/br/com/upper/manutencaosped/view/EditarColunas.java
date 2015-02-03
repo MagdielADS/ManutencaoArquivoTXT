@@ -79,6 +79,11 @@ public class EditarColunas extends javax.swing.JFrame {
         jTextField1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextField1.setEnabled(false);
 
+        tfArquivo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tfArquivoFocusLost(evt);
+            }
+        });
         tfArquivo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tfArquivoKeyPressed(evt);
@@ -151,6 +156,14 @@ public class EditarColunas extends javax.swing.JFrame {
         btPesquise.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btPesquiseActionPerformed(evt);
+            }
+        });
+        btPesquise.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                btPesquiseFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                btPesquiseFocusLost(evt);
             }
         });
 
@@ -341,6 +354,7 @@ public class EditarColunas extends javax.swing.JFrame {
             File arquivo = file.getSelectedFile();
             tfDestino.setText(arquivo.getPath());
         }
+        habilitaBotao();
     }//GEN-LAST:event_btDestinoActionPerformed
 
     private void tfArquivoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfArquivoKeyPressed
@@ -390,6 +404,18 @@ public class EditarColunas extends javax.swing.JFrame {
     private void tfValorParaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfValorParaKeyReleased
         habilitaBotao();
     }//GEN-LAST:event_tfValorParaKeyReleased
+
+    private void tfArquivoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfArquivoFocusLost
+        //habilitaBotao();
+    }//GEN-LAST:event_tfArquivoFocusLost
+
+    private void btPesquiseFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_btPesquiseFocusLost
+        habilitaBotao();
+    }//GEN-LAST:event_btPesquiseFocusLost
+
+    private void btPesquiseFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_btPesquiseFocusGained
+        habilitaBotao();
+    }//GEN-LAST:event_btPesquiseFocusGained
 
     /**
      * @param args the command line arguments

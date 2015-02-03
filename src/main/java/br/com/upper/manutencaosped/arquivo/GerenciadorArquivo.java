@@ -69,25 +69,25 @@ public class GerenciadorArquivo {
                         writer.close();
                         new File(arquivoTmp).delete();
                         throw new OutColumnOfFileLimits("Coluna " + String.valueOf(coluna) + " não existe no registro " + registro);
-                    }
+                    } else {
+                        if (valores[coluna + 1].equals(valorAntigo)) {
+                            valores[coluna + 1] = valorNovo;
+                            qtde++;
+                        } else if (valorAntigo.equals("") || valorAntigo.equals(" ")) {
+                            valores[coluna + 1] = valorNovo;
+                            qtde++;
+                        }
 
-                    if (valores[coluna + 1].equals(valorAntigo)) {
-                        valores[coluna + 1] = valorNovo;
-                        qtde++;
-                    } else if (valorAntigo.equals("") || valorAntigo.equals(" ")) {
-                        valores[coluna + 1] = valorNovo;
-                        qtde++;
+                        String novaLinha = "";
+                        for (String string : valores) {
+                            novaLinha += "|" + string;
+                        }
+                        novaLinha = novaLinha.substring(1);
+                        novaLinha += "|";
+                        System.out.println(novaLinha);
+                        novaLinha += System.getProperty("line.separator");
+                        writer.write(novaLinha);
                     }
-
-                    String novaLinha = "";
-                    for (String string : valores) {
-                        novaLinha += "|" + string;
-                    }
-                    novaLinha = novaLinha.substring(1);
-                    novaLinha += "|";
-                    System.out.println(novaLinha);
-                    novaLinha += System.getProperty("line.separator");
-                    writer.write(novaLinha);
                 } else {
                     System.out.println(linha);
                     linha += System.getProperty("line.separator");
@@ -97,13 +97,10 @@ public class GerenciadorArquivo {
                 linha = lerArq.readLine();
             }
 
-            if (qtde <= 0) {
-                System.out.println("Não achei o arquivo " + arquivoTmp);
-            }
             arq.close();
             lerArq.close();
             writer.close();
-
+            System.out.println("Quantidade: "+qtde);
             if (qtde <= 0) {
                 new File(arquivoTmp).delete();
             }
