@@ -57,13 +57,18 @@ public class GerenciadorArquivo {
 
         if (linha.charAt(0) == '|') {
             while (linha != null) {
-                String[] valores = linha.split("\\|");
-
-                if (coluna > valores.length - 1) {
-                    throw new OutColumnOfFileLimits("Coluna " + String.valueOf(coluna) + " não existe no registro " + registro);
+                String[] vetorInicial = linha.split("\\|", -1);
+                String[] valores = new String[vetorInicial.length-1];
+                for (int i = 0; i < vetorInicial.length - 1; i++) {
+                    valores[i] = vetorInicial[i];
                 }
 
                 if (valores[1].equalsIgnoreCase(registro)) {
+                    if (coluna >= valores.length - 1) {
+                        System.out.println("Linha: " + linha + "Length: " + valores.length);
+                        throw new OutColumnOfFileLimits("Coluna " + String.valueOf(coluna) + " não existe no registro " + registro);
+                    }
+
                     if (valores[coluna + 1].equals(valorAntigo)) {
                         valores[coluna + 1] = valorNovo;
                         qtde++;
