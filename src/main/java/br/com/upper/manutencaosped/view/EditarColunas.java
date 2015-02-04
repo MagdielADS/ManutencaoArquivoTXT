@@ -7,7 +7,6 @@ package br.com.upper.manutencaosped.view;
 
 import br.com.upper.manutencaosped.arquivo.GerenciadorArquivo;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;

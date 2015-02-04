@@ -70,11 +70,11 @@ public class GerenciadorArquivo {
                         new File(arquivoTmp).delete();
                         throw new OutColumnOfFileLimits("Coluna " + String.valueOf(coluna) + " não existe no registro " + registro);
                     } else {
-                        if (valores[coluna + 1].equals(valorAntigo)) {
-                            valores[coluna + 1] = valorNovo;
+                        if (valores[coluna].equals(valorAntigo)) {
+                            valores[coluna] = valorNovo;
                             qtde++;
                         } else if (valorAntigo.equals("") || valorAntigo.equals(" ")) {
-                            valores[coluna + 1] = valorNovo;
+                            valores[coluna] = valorNovo;
                             qtde++;
                         }
 
