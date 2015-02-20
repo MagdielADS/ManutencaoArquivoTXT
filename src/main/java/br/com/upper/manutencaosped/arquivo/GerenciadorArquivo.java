@@ -55,8 +55,8 @@ public class GerenciadorArquivo {
 
         String linha = lerArq.readLine();
 
-        if (linha.charAt(0) == '|') {
-            while (linha != null) {
+        while (linha != null) {
+            if (linha.charAt(0) == '|') {
                 String[] vetorInicial = linha.split("\\|", -1);
                 String[] valores = new String[vetorInicial.length - 1];
                 for (int i = 0; i < vetorInicial.length - 1; i++) {
@@ -95,19 +95,20 @@ public class GerenciadorArquivo {
                 }
 
                 linha = lerArq.readLine();
+            }else{
+                writer.write(linha);
+                linha = lerArq.readLine();
             }
-
-            arq.close();
-            lerArq.close();
-            writer.close();
-            System.out.println("Quantidade: "+qtde);
-            if (qtde <= 0) {
-                new File(arquivoTmp).delete();
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Formato de arquivo inválido", "Erro", JOptionPane.ERROR_MESSAGE);
         }
+
+        arq.close();
+        lerArq.close();
+        writer.close();
+        System.out.println("Quantidade: " + qtde);
+        if (qtde <= 0) {
+            new File(arquivoTmp).delete();
+        }
+
         return qtde;
     }
-
 }
