@@ -95,6 +95,8 @@ public class GerenciadorArquivo {
                 }
 
                 linha = lerArq.readLine();
+            } else {
+                linha = lerArq.readLine();
             }
         }
 
